@@ -1,0 +1,18 @@
+{
+  "products": {
+    "1": {
+      "name": "Pizza de Calabresa",
+      "description": "Da Sadia",
+      "category": "ALIMENTO",
+      "quantity": 10,
+      "created_at": "2025-02-16T03:37:20.555069+00:00"
+    },
+    "2": {
+      "name": "Sab\u00e3o",
+      "description": null,
+      "category": "LIMPEZA",
+      "quantity": 10,
+      "created_at": "2025-02-16T03:50:03.929269+00:00"
+    }
+  }
+}

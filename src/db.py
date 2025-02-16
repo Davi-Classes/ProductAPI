@@ -13,7 +13,7 @@ def get_all_products(
     else:
         results = db.table('products').search(Query().category == category)
 
-    return results
+    return [Product(id=data.doc_id, **data) for data in results]
 
 
 def get_product_by_id(id: int) -> Product | None:
@@ -34,7 +34,7 @@ def get_product_by_name_and_category(
 
 
 def create_new_product(product: Product) -> Product:
-    product_document = product.model_dump()
+    product_document = product.model_dump(exclude={'id'})
     product_document.update({
         'created_at': product.created_at.isoformat()
     })
