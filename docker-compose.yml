@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: product-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=product_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=4dm1n
+
+    volumes:
+      - postgres_data:/var/lib/postgres/data
+
+volumes:
+  postgres_data:
