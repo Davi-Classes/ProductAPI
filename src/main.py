@@ -1,28 +1,33 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from models import Product
-from schemas import ProductIn
+from db import get_db
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from schemas import ProductIn, ProductOut, MessageOut
 
 
-products = []
 app = FastAPI(title='Product API')
 
 
 @app.get('/products')
-def find_all_products():
+def find_all_products(
+    db: Session = Depends(get_db)
+) -> list[ProductOut]:
+    query = select(Product)
+
+    products = db.execute(query).scalars().all()
+
     return products
 
 @app.post('/products')
-def create_product(product_in: ProductIn):
+def create_product(
+    product_in: ProductIn,
+    db: Session = Depends(get_db)
+) -> MessageOut:
     data = product_in.model_dump()
     product = Product(**data)
     
-    # Mesma coisa que estamos fazendo acima
-    # product = Product(
-    #     name=product_in.name, 
-    #     description=product_in.description,
-    #     category=product_in.category,
-    #     quantity=product_in.quantity
-    # )
-    
-    products.append(product)
-    return product
+    db.add(product)
+    db.commit()
+
+    return MessageOut(message='Produto cadastrado com sucesso.')
