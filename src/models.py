@@ -2,7 +2,7 @@ from enum import StrEnum
 from datetime import datetime, timezone
 
 from db import Long, BaseModel
-from sqlalchemy import Column, String, Integer, DateTime, Enum
+from sqlalchemy import Column, String, Integer, DateTime, Enum, Float
 from sqlalchemy.orm import Mapped
 
 
@@ -11,6 +11,7 @@ class Category(StrEnum):
     CLEANING = 'LIMPEZA'
     HYGIENE = 'HIGIENE'
     ELETRONIC = 'ELETRONICO'
+    TOOL = 'FERRAMENTA'
 
 
 class Product(BaseModel):
@@ -24,6 +25,12 @@ class Product(BaseModel):
     created_at: Mapped[datetime] = Column(DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc))
 
     def __init__(self, name: str, quantity: int, category: Category, description: str | None = None):
+        self.name = name
+        self.quantity = quantity
+        self.category = category
+        self.description = description
+
+    def update(self, name: str, quantity: int, category: Category, description: str | None = None):
         self.name = name
         self.quantity = quantity
         self.category = category
